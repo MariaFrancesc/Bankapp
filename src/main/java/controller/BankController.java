@@ -11,6 +11,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.transaction.UserTransaction;
+
+import exception.*;
 import model.Account;
 import model.Customer;
 import service.BranchLocal;
@@ -183,6 +185,55 @@ public class BankController extends HttpServlet {
 					utx.rollback();
 					message = "Problema: Trasferimento non possibile!";
 				}catch(Exception ee) {}
+			}
+			break;
+		case "allAccounts":
+			try {
+				List<Account> accounts = branch.getAllAccounts();
+				if(accounts != null)
+					for(Account item: accounts) {
+						Account a = item;
+						message+="Conto n. [" + a.getAccountId() + "] saldo [" + a.getBalance() + "]\n";
+					}
+				else throw new AccountNotFoundException("Non e' disponibile nessun conto!");
+			}catch(AccountNotFoundException anf) {
+				message="Problema: " + anf.getMessage();
+			}
+			break;
+		case "allAccountsBalanceGT":
+			try {
+				List<Account> accounts = branch.getAccountWithBalanceGT();
+				if(accounts != null)
+					for(Account item: accounts) {
+						Account a = item;
+						message+="Conto n. [" + a.getAccountId() + "] saldo [" + a.getBalance() + "]\n";
+					}
+				else throw new AccountNotFoundException("Non e' disponibile nessun conto con saldo maggiore di 1000 dollari!");
+			}catch(AccountNotFoundException anf) {
+				message="Problema: " + anf.getMessage();
+			}
+			break;
+		case "allCustomers":
+			try {
+				List<Customer> customers = branch.getAllCustomers();
+				if(customers != null)
+					for(Customer item: customers) {
+						Customer c = item;
+						message+="Codice Fiscale [" + c.getCF() + "] first name [" + c.getFirstName() + "] + last name [" + c.getLastName() + "] \n";
+					}
+				else throw new CustomerNotFoundException("Non e' disponibile nessun cliente!");
+			}catch(CustomerNotFoundException anf) {
+				message="Problema: " + anf.getMessage();
+			}
+			break;
+		case "customerInfo":
+			try {
+				cf = request.getParameter("cf");
+				Customer cust = branch.getCustomer(cf);
+				if(cust==null) throw new CustomerNotFoundException("Il codice fiscale inserito [" + cf + "] non e' presente nella banca dati!");
+				message+="Codice Fiscale [" + cust.getCF() + "] first name [" + cust.getFirstName() + "] + last name [" + cust.getLastName() + "] \n";
+			}catch(CustomerNotFoundException anf) {
+				message="Problema: " + anf.getMessage();
 			}
 			break;
 		default:

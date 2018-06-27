@@ -69,5 +69,19 @@ public class Branch implements BranchLocal {
 		return em.find(Customer.class, cf);
 	}
 	
+	public List<Customer> getAllCustomers(){
+		List<Customer> customers = em.createNamedQuery("Customer.findAllCustomer", Customer.class).getResultList();
+		return customers;
+	}
+	
+	public List<Account> getAllAccounts(){
+		List<Account> accounts = em.createNamedQuery("Account.findAllAccounts", Account.class).getResultList();
+		return accounts;
+	}
+	
+	public List<Account> getAccountWithBalanceGT(){
+		List<Account> accounts = em.createNamedQuery("Account.findAccountWithBalanceGT", Account.class).getResultList();
+		return accounts;
+	}
 
 }

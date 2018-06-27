@@ -9,7 +9,10 @@ import javax.persistence.*;
  */
 @Entity
 @NamedQueries({@NamedQuery(name = "Account.findAllPositiveAmounts",query = "SELECT a from Account a WHERE a.balance>0"),
-		@NamedQuery(name = "Account.findAllCustomerAccounts",query = "SELECT a from Account a WHERE a.customer.CF = :CF")})
+		@NamedQuery(name = "Account.findAllCustomerAccounts",query = "SELECT a from Account a WHERE a.customer.CF = :CF"),
+		@NamedQuery(name = "Account.findAllAccounts",query = "SELECT a from Account a"),
+		@NamedQuery(name = "Account.findAccountWithBalanceGT",query = "SELECT a from Account a WHERE a.balance>1000")
+		})
 
 public class Account implements Serializable {
 

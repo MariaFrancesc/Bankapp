@@ -11,10 +11,9 @@ import javax.persistence.*;
  *
  */
 @Entity
-
-public class Customer implements Serializable {
-
-	   
+@NamedQueries({@NamedQuery(name = "Customer.findAllCustomer",query = "SELECT c from Customer c"), 
+	@NamedQuery(name = "Customer.findCustomerInfo",query = "SELECT c from Customer c WHERE c.CF = :CF")})
+public class Customer implements Serializable {   
 	@Id
 	private String CF;
 	private String firstName;
@@ -35,7 +34,6 @@ public class Customer implements Serializable {
 		CF = cf;
 		
 	}
-	
 	
 	public String getCF() {
 		return this.CF;
@@ -59,7 +57,7 @@ public class Customer implements Serializable {
 		this.lastName = lastName;
 	}   
 	public List<Account> getAccounts() {
-		accounts.size(); //forzo, per questa operazione, il recupero degli oggetti per evitare di avere un NullPointer. Forzo la materializzazione della collezione quindi possiamo restituirla senza problemi
+		accounts.size(); 
 		return this.accounts;
 	}
 
